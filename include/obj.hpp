@@ -11,17 +11,17 @@ namespace vox {
         class Mesh;
         class Texture;
 
-        class VoxObj {
+        class Obj {
             public:
                 Mesh *mesh;
                 std::string name;
                 std::string texpath;
                 Texture *texture;
                 glm::vec3 position = glm::vec3(0);
-                VoxObj();
-                VoxObj(std::string name, Mesh* mesh, std::string texpath);
-                VoxObj(std::string name, Mesh* mesh, std::string texpath, glm::vec3 position);
-                ~VoxObj();
+                Obj();
+                Obj(std::string name, Mesh* mesh, std::string texpath);
+                Obj(std::string name, Mesh* mesh, std::string texpath, glm::vec3 position);
+                ~Obj();
         };
 
     }

@@ -5,7 +5,7 @@
 #include <string>
 
 #include <mesh.hpp>
-#include <voxobj.hpp>
+#include <obj.hpp>
 #include <cube.hpp>
 #include <macros.hpp>
 #include <shader.hpp>
@@ -29,10 +29,12 @@ using namespace obj;
 
 namespace vox::render {
 
+    void loadObj (Obj& obj);
+
     GLFWwindow* window;
 
     vector<Texture*> textures (0);
-    vector<VoxObj*> objects (0);
+    vector<Obj*> objects (0);
 
     GLuint programID;
     GLuint MatrixID;
@@ -88,14 +90,14 @@ namespace vox::render {
         // Get a handle for our "myTextureSampler" uniform
         TextureID  = glGetUniformLocation(programID, "tex2d");
 
-        VoxObj* cube = createCube();
+        Obj* cube = createCube();
         objects.push_back(cube);
-        VoxObj* cube2 = createCube(vec3(2,0,0));
+        Obj* cube2 = createCube(vec3(2,0,0));
         objects.push_back(cube2);
 
-        npforeach (VoxObj*, obj, objects)
+        npforeach (Obj*, obj, objects)
             cout << "Loading " << obj->name << endl;
-            loadVoxObj(*obj);
+            loadObj(*obj);
         }
 
         return true;
@@ -104,7 +106,7 @@ namespace vox::render {
 
     void render_cleanup () {
         // Cleanup VBO and shader
-        npforeach (VoxObj*, obj, objects)
+        npforeach (Obj*, obj, objects)
             glDeleteBuffers(1, &obj->mesh->vertexBuffer);
             glDeleteBuffers(1, &obj->mesh->uvBuffer);
             glDeleteVertexArrays(1, &obj->mesh->VAO);
@@ -133,7 +135,7 @@ namespace vox::render {
                                     glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
                             );
 
-        npforeach(VoxObj*, obj, objects)
+        npforeach(Obj*, obj, objects)
 
             // Bind our texture in Texture Unit 0
             glActiveTexture(GL_TEXTURE0);
@@ -197,7 +199,7 @@ namespace vox::render {
         glfwPollEvents();
     }
 
-    void loadVoxObj (VoxObj& obj) {
+    void loadObj (Obj& obj) {
 
         glGenVertexArrays(1, &obj.mesh->VAO);
         glBindVertexArray(obj.mesh->VAO);

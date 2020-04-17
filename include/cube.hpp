@@ -5,11 +5,11 @@
 
 namespace vox {
     namespace obj {
-        class VoxObj;
+        class Obj;
     }
 }
 
-vox::obj::VoxObj* createCube (glm::vec3 position);
-vox::obj::VoxObj* createCube ();
+vox::obj::Obj* createCube (glm::vec3 position);
+vox::obj::Obj* createCube ();
 
 #endif

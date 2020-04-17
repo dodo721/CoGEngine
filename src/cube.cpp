@@ -1,7 +1,7 @@
 #include "cube.hpp"
 #include "array_utils.hpp"
 #include "mesh.hpp"
-#include "voxobj.hpp"
+#include "obj.hpp"
 
 using namespace glm;
 using namespace vox::obj;
@@ -30,12 +30,12 @@ vector<float> cube_uv_data = arrayToVector<float>(cube_uv_array, sizeof(cube_uv_
 vector<unsigned int> cube_indices_data = arrayToVector<unsigned int>(cube_indices_array, sizeof(cube_indices_array) / sizeof(cube_indices_array[0]));
 Mesh* cubeMesh = new Mesh(cube_vertex_data, cube_uv_data, cube_indices_data);
 
-VoxObj* createCube (vec3 position) {
-    VoxObj* obj = new VoxObj("Cube", cubeMesh, "grass.png", position);
+Obj* createCube (vec3 position) {
+    Obj* obj = new Obj("Cube", cubeMesh, "grass.png", position);
     return obj;
 }
 
-VoxObj* createCube () {
-    VoxObj* obj = new VoxObj("Cube", cubeMesh, "grass.png");
+Obj* createCube () {
+    Obj* obj = new Obj("Cube", cubeMesh, "grass.png");
     return obj;
 }
