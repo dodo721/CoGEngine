@@ -10,7 +10,7 @@
 
 using namespace glm;
 using namespace std;
-using namespace vox::obj;
+using namespace cog;
 
 Texture::Texture() {}
 

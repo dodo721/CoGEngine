@@ -1,11 +1,11 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "voxobj.hpp"
+#include "obj.hpp"
 
-namespace vox::obj {
+namespace cog {
 
-    class Camera : VoxObj {
+    class Camera : Obj {}
 
         public:
             float horizontalAngle = 3.14f;

@@ -3,13 +3,11 @@
 
 #include <glm/glm.hpp>
 
-namespace vox {
-    namespace obj {
-        class Obj;
-    }
+namespace cog {
+    class Obj;
 }
 
-vox::obj::Obj* createCube (glm::vec3 position);
-vox::obj::Obj* createCube ();
+cog::Obj* createCube (glm::vec3 position);
+cog::Obj* createCube ();
 
 #endif

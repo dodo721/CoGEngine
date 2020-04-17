@@ -4,7 +4,7 @@
 #include "obj.hpp"
 
 using namespace glm;
-using namespace vox::obj;
+using namespace cog;
 
 float cube_vertex_array[] = {
     -1.0f, -1.0f, -1.0f,            // 0 - bottom left

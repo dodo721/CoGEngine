@@ -6,7 +6,7 @@
 #include "render.hpp"
 
 using namespace std;
-using namespace vox::render;
+using namespace cog;
 
 int main( void )
 {

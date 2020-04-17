@@ -24,10 +24,9 @@
 
 using namespace glm;
 using namespace std;
-using namespace vox;
-using namespace obj;
+using namespace cog;
 
-namespace vox::render {
+namespace cog {
 
     void loadObj (Obj& obj);
 
