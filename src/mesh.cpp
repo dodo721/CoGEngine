@@ -6,6 +6,7 @@ using namespace glm;
 using namespace std;
 using namespace vox::obj;
 
+
 Mesh::Mesh () {}
 
 Mesh::Mesh (vector<float> verts, vector<float> uv, vector<unsigned int> indices): vertices(verts), uvs(uv), indices(indices) {}
