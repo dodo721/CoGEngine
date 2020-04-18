@@ -14,10 +14,10 @@ float cube_vertex_array[] = {
 };
 
 float cube_uv_array[] = {
-    -1.0f, -1.0f,
-    -1.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, -1.0f
+    -0.5f, -0.5f,
+    -0.5f, 0.5f,
+    0.5f, 0.5f,
+    0.5f, -0.5f
 };
 
 unsigned int cube_indices_array[] = {
@@ -31,11 +31,11 @@ vector<unsigned int> cube_indices_data = arrayToVector<unsigned int>(cube_indice
 Mesh* cubeMesh = new Mesh(cube_vertex_data, cube_uv_data, cube_indices_data);
 
 Obj* createCube (vec3 position) {
-    Obj* obj = new Obj("Cube", cubeMesh, "grass.png", position);
+    Obj* obj = new Obj("Cube", cubeMesh, "uvmap.jpg", position);
     return obj;
 }
 
 Obj* createCube () {
-    Obj* obj = new Obj("Cube", cubeMesh, "grass.png");
+    Obj* obj = new Obj("Cube", cubeMesh, "uvmap.jpg");
     return obj;
 }

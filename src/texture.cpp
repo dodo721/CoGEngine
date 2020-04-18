@@ -48,5 +48,7 @@ bool Texture::loadTexture () {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glGenerateMipmap(GL_TEXTURE_2D);
     
+	stbi_image_free(image);
+	
     return true;
 }

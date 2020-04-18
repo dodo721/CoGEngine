@@ -10,6 +10,7 @@
 #include <macros.hpp>
 #include <shader.hpp>
 #include <texture.hpp>
+#include "postprocessor.hpp"
 
 //#include <GL/glew.h>
 #include <glad/glad.h>
@@ -39,6 +40,8 @@ namespace cog {
     GLuint MatrixID;
     GLuint TextureID;
 
+    Postprocessor *postprocess = NULL;
+
     bool render_init (int width, int height) {
         // Initialise GLFW
         if( !glfwInit() )
@@ -54,7 +57,7 @@ namespace cog {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         // Open a window and create its OpenGL context
-        window = glfwCreateWindow( width, height, "Tutorial 05 - Textured Cube", NULL, NULL);
+        window = glfwCreateWindow( width, height, "CogEngine", NULL, NULL);
         if( window == NULL ){
             fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
             glfwTerminate();
@@ -71,13 +74,10 @@ namespace cog {
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-        // Dark blue background
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-
         // Enable depth test
         glEnable(GL_DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
-        glDepthFunc(GL_LESS); 
+        glDepthFunc(GL_LESS);
         
 
         // Create and compile our GLSL program from the shaders
@@ -89,9 +89,7 @@ namespace cog {
         // Get a handle for our "myTextureSampler" uniform
         TextureID  = glGetUniformLocation(programID, "tex2d");
 
-        Obj* cube = createCube();
-        objects.push_back(cube);
-        Obj* cube2 = createCube(vec3(2,0,0));
+        Obj* cube2 = createCube(vec3(0,0,-1));
         objects.push_back(cube2);
 
         npforeach (Obj*, obj, objects)
@@ -119,6 +117,18 @@ namespace cog {
     }
 
     void render_update () {
+
+        if (postprocess != NULL) {
+            postprocess->bind();
+        } else {
+            // Render to the screen
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0,0,1024,1024); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+        }
+
+        // Dark blue background
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -126,13 +136,17 @@ namespace cog {
         glUseProgram(programID);
 
         // Projection matrix : 45� Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+        //glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+
+        // Projection matrix: Ortho
+        glm::mat4 Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.0f,100.0f); // In world coordinates
+
         // Camera matrix
-        glm::mat4 View       = glm::lookAt(
-                                    glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-                                    glm::vec3(0,0,0), // and looks at the origin
-                                    glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-                            );
+        glm::mat4 View = glm::lookAt(
+            glm::vec3(0,0,1), // Camera is at (4,3,3), in World Space
+            glm::vec3(0,0,0), // and looks at the origin
+            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+        );
 
         npforeach(Obj*, obj, objects)
 
@@ -186,16 +200,22 @@ namespace cog {
                 (void*)0           // element array buffer offset
             );
 
-            /*// Draw the triangle !
-            glDrawArrays(GL_TRIANGLES, 0, obj->mesh->getVertSize()); // 12*3 indices starting at 0 -> 12 triangles*/
-
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
 
         }
+
+        if (postprocess != NULL) {
+            postprocess->draw();
+        }
+
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
+    }
+
+    void use_postprocessor (Postprocessor* post) {
+        postprocess = post;
     }
 
     void loadObj (Obj& obj) {

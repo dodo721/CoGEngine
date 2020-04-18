@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "render.hpp"
+#include "postprocessor.hpp"
 
 using namespace std;
 using namespace cog;
@@ -11,8 +12,13 @@ using namespace cog;
 int main( void )
 {
 	
-	render_init(1024, 768);
-	
+	cout << "Initiating CogEngine..." << endl;
+	render_init(1024, 1024);
+
+	// Post processing
+	Postprocessor* post = new Postprocessor("shaders/projection.frag", 1024, 1024);
+	use_postprocessor(post);
+
 	do {
 		
 		render_update();
@@ -21,6 +27,7 @@ int main( void )
 		   glfwWindowShouldClose(window) == 0 ); // Check if the ESC key was pressed or the window was closed
 
 	render_cleanup();
+	delete post;
 
 	return 0;
 }
