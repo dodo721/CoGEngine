@@ -206,11 +206,7 @@ namespace cog {
         }
 
         if (postprocess != NULL) {
-            Postprocessor* temp = postprocess;
-            do {
-                temp->draw();
-                temp = temp->next;
-            } while (temp != NULL);
+            postprocess->draw();
         }
 
         // Swap buffers

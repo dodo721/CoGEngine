@@ -16,7 +16,7 @@ int main( void )
 	render_init(1024, 1024);
 
 	// Post processing
-	Postprocessor* blur_h = new Postprocessor("shaders/bloom.frag", 1024, 1024);
+	Postprocessor* blur_h = new Postprocessor("shaders/blur.frag", 1024, 1024);
 	if (!blur_h->setFloatParam("radius", 3.0f)) cout << "Radius failed" << endl;
 	if (!blur_h->setFloatParam("resolution", 1024.0f)) cout << "Resolution failed" << endl;
 	if (!blur_h->setFloatParam("stDev", 0.01f)) cout << "StDev failed" << endl;
@@ -25,7 +25,7 @@ int main( void )
 	if (!blur_h->setIntParam("samples", 20)) cout << "Samples failed" << endl;
 	use_postprocessor(blur_h);
 
-	Postprocessor* blur_v = new Postprocessor("shaders/bloom.frag", 1024, 1024);
+	Postprocessor* blur_v = new Postprocessor("shaders/blur.frag", 1024, 1024);
 	if (!blur_v->setFloatParam("radius", 3.0f)) cout << "Radius failed" << endl;
 	if (!blur_v->setFloatParam("resolution", 1024.0f)) cout << "Resolution failed" << endl;
 	if (!blur_v->setFloatParam("stDev", 0.01f)) cout << "StDev failed" << endl;

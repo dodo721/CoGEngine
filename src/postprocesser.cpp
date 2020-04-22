@@ -127,6 +127,10 @@ void Postprocessor::draw () {
     glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 3 -> 1 triangle
 
     glDisableVertexAttribArray(0);
+
+    if (next != NULL) {
+        next->draw();
+    }
 }
 
 bool Postprocessor::setFloatParam (string name, float param) {
