@@ -28,7 +28,7 @@ bool Texture::loadTexture () {
 	int comp;
 	unsigned char* image = stbi_load(imagepath.c_str(), &w, &h, &comp, 3); // 3 - STBI_rgb
 
-	cout << "Image texture comp: " << comp;
+	cout << "Image texture comp: " << comp << endl;
 
 	if(image == nullptr)
 		return false;

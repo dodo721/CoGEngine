@@ -3,6 +3,7 @@
 #include <iostream>
 #include "glad/glad.h"
 #include "shader.hpp"
+#include "macros.hpp"
 
 using namespace std;
 using namespace cog;
@@ -112,6 +113,15 @@ void Postprocessor::draw () {
     glBindTexture(GL_TEXTURE_2D, texture);
     // Set our "renderedTexture" sampler to user Texture Unit 0
     glUniform1i(sampler, 0);
+    mapforeach (GLuint, float, floatParams) {
+        glUniform1f(it->first, it->second);
+    }
+    mapforeach (GLuint, int, intParams) {
+        glUniform1i(it->first, it->second);
+    }
+    mapforeach (GLuint, vec2, vec2Params) {
+        glUniform2f(it->first, it->second.x, it->second.y);
+    }
 
     // Draw the triangle !
     glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 3 -> 1 triangle
@@ -119,10 +129,30 @@ void Postprocessor::draw () {
     glDisableVertexAttribArray(0);
 }
 
-void Postprocessor::addFloatParam (string name, float param) {
-    floatParams[name] = param;
+bool Postprocessor::setFloatParam (string name, float param) {
+    GLuint location = glGetUniformLocation(programId, name.c_str());
+    if (location == -1)
+        return false;
+    floatParams[location] = param;
+    return true;
 }
 
-void Postprocessor::addVec2Param (string name, float x, float y) {
-    //vec2Params[name] = param;
+bool Postprocessor::setIntParam (string name, int param) {
+    GLuint location = glGetUniformLocation(programId, name.c_str());
+    if (location == -1)
+        return false;
+    intParams[location] = param;
+    return true;
+}
+
+bool Postprocessor::setVec2Param (string name, vec2 param) {
+    GLuint location = glGetUniformLocation(programId, name.c_str());
+    if (location == -1)
+        return false;
+    vec2Params[location] = param;
+    return true;
+}
+
+bool Postprocessor::setVec2Param(string name, float x, float y) {
+    return setVec2Param(name, vec2(x,y));
 }
