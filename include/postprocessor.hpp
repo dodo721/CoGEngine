@@ -3,10 +3,7 @@
 
 #include <string>
 #include <map>
-
-namespace glm {
-    class vec2;
-}
+#include "glm/glm.hpp"
 
 namespace cog {
 

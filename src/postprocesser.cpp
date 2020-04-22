@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include "glad/glad.h"
-#include "glm/glm.hpp"
 #include "shader.hpp"
 
 using namespace std;
