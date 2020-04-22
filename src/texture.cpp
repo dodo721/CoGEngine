@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 #include "texture.hpp"
 #include <glad/glad.h>
@@ -26,6 +27,8 @@ bool Texture::loadTexture () {
 	int h;
 	int comp;
 	unsigned char* image = stbi_load(imagepath.c_str(), &w, &h, &comp, 3); // 3 - STBI_rgb
+
+	cout << "Image texture comp: " << comp;
 
 	if(image == nullptr)
 		return false;

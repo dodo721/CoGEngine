@@ -16,8 +16,12 @@ int main( void )
 	render_init(1024, 1024);
 
 	// Post processing
-	Postprocessor* post = new Postprocessor("shaders/projection.frag", 1024, 1024);
-	use_postprocessor(post);
+	Postprocessor* sphere = new Postprocessor("shaders/projection.frag", 1024, 1024);
+	Postprocessor* blur_h = new Postprocessor("shaders/blur.frag", 1024, 1024);
+	//use_postprocessor(sphere);
+	blur_h->addFloatParam("radius", 1.0f);
+	blur_h->addVec2Param("dir", 1.0f, 0.0f);
+	use_postprocessor(blur_h);
 
 	do {
 		
@@ -27,7 +31,8 @@ int main( void )
 		   glfwWindowShouldClose(window) == 0 ); // Check if the ESC key was pressed or the window was closed
 
 	render_cleanup();
-	delete post;
+	delete sphere;
+	delete blur_h;
 
 	return 0;
 }

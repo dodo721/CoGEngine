@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include "glad/glad.h"
+#include "glm/glm.hpp"
 #include "shader.hpp"
 
 using namespace std;
 using namespace cog;
+using namespace glm;
 
 Postprocessor::Postprocessor (string shaderPath, GLuint width, GLuint height): shaderPath(shaderPath), width(width), height(height) {
     programId = LoadShaders( "shaders/postprocess.vert", shaderPath.c_str() );
@@ -78,9 +80,13 @@ void Postprocessor::bind () {
 }
 
 void Postprocessor::draw () {
-    // Render to the screen
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0,0,width,height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    if (next != NULL) {
+        next->bind();
+    } else {
+        // Render to the screen
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0,0,width,height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    }
 
     glBindVertexArray(vao);
     // 1rst attribute buffer : vertices
@@ -112,4 +118,12 @@ void Postprocessor::draw () {
     glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 3 -> 1 triangle
 
     glDisableVertexAttribArray(0);
+}
+
+void Postprocessor::addFloatParam (string name, float param) {
+    floatParams[name] = param;
+}
+
+void Postprocessor::addVec2Param (string name, float x, float y) {
+    //vec2Params[name] = param;
 }

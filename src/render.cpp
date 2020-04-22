@@ -206,7 +206,11 @@ namespace cog {
         }
 
         if (postprocess != NULL) {
-            postprocess->draw();
+            Postprocessor* temp = postprocess;
+            do {
+                temp->draw();
+                temp = temp->next;
+            } while (temp != NULL);
         }
 
         // Swap buffers
@@ -215,7 +219,16 @@ namespace cog {
     }
 
     void use_postprocessor (Postprocessor* post) {
-        postprocess = post;
+        if (postprocess != NULL) {
+            Postprocessor* temp = postprocess;
+            while (temp->next != NULL) {
+                temp = temp->next;
+            }
+            temp->next = post;
+            post->prev = temp;
+        } else {
+            postprocess = post;
+        }
     }
 
     void loadObj (Obj& obj) {
